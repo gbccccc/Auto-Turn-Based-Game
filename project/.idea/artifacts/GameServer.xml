@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="GameServer">
+    <output-path>$PROJECT_DIR$/out/artifacts/GameServer</output-path>
+    <root id="root">
+      <element id="archive" name="j07-gbccccc.jar">
+        <element id="module-output" name="j07-gbccccc" />
+      </element>
+    </root>
+  </artifact>
+</component>
