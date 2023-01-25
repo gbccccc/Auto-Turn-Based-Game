@@ -26,7 +26,6 @@ public class GameClient extends Thread {
     private boolean isClosing;
 
     public GameClient(String serverName, int port) throws IOException {
-        SocketAddress address = new InetSocketAddress(serverName, port);
         this.server = SocketChannel.open(new InetSocketAddress(serverName, port));
         this.server.configureBlocking(false);
 
@@ -105,9 +104,9 @@ public class GameClient extends Thread {
     }
 
     private void handleDrawTasks(int bufferSize) {
+        int readByteCount = 0;
+        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         try {
-            ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
-            int readByteCount = 0;
             while (readByteCount < bufferSize) {
                 readByteCount += server.read(buffer);
             }

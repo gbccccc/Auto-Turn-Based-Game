@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class GameWindow extends JFrame implements GameUpdateListener {
+public class GameWindow extends JFrame {
     private GameClient client;
     private List<DrawTask> drawTasks;
     private static final int imgSize = 32;
@@ -32,7 +32,7 @@ public class GameWindow extends JFrame implements GameUpdateListener {
         this.client = gameClient;
 
         this.setSize(960, 720);
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+//        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         this.setLayout(new GridBagLayout());
         this.add(new GamePanel(width, height), new GridBagConstraints());
@@ -52,12 +52,6 @@ public class GameWindow extends JFrame implements GameUpdateListener {
     }
 
     private static final int updateGap = 400;
-
-    // receive game update signal
-    @Override
-    public void gameUpdatePerform() {
-        repaint();
-    }
 
     @Override
     protected void processKeyEvent(KeyEvent e) {
@@ -100,9 +94,6 @@ public class GameWindow extends JFrame implements GameUpdateListener {
             }
 
             client.close();
-            dispose();
-
-            System.exit(0);
         } else {
             super.processWindowEvent(pEvent);
         }
@@ -117,7 +108,7 @@ public class GameWindow extends JFrame implements GameUpdateListener {
         }
 
         @Override
-        public void paint(Graphics graphics) {
+        public void paintComponent(Graphics graphics) {
             CountDownLatch doneSignal = new CountDownLatch(drawTasks.size());
             for (DrawTask task : drawTasks) {
                 executor.execute(task.getDraw(graphics, doneSignal));
@@ -127,8 +118,6 @@ public class GameWindow extends JFrame implements GameUpdateListener {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
-            drawTasks.clear();
         }
     }
 

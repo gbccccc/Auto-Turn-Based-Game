@@ -1,3 +1,2 @@
-WORLD
-world
+WORLD world
 END

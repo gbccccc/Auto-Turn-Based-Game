@@ -102,9 +102,10 @@ public abstract class Creature implements Drawable {
             return null;
         }
 
-        if (destination.getCreature() != null && isAdverse(destination.getCreature())) {
-            return destination.getCreature();
-        } else {
+        Creature creature = destination.getCreature();
+        if (creature !=null && isAdverse(creature)){
+            return creature;
+        } else{
             enterPosition(destination);
             return null;
         }

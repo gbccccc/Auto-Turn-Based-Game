@@ -7,6 +7,7 @@ import gui.DrawTask;
 import mylib.Inet4Address;
 
 import java.io.*;
+import java.lang.instrument.Instrumentation;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
@@ -137,6 +138,8 @@ public class GameServer extends Thread implements GameUpdateListener {
 
     private void handleAcceptableKey(SelectionKey key) {
         try {
+            int id = game.playerLink();
+
             SocketChannel client;
             ServerSocketChannel server = (ServerSocketChannel) key.channel();
             client = server.accept();
@@ -144,7 +147,7 @@ public class GameServer extends Thread implements GameUpdateListener {
 
             selector.wakeup();
             client.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-            int id = game.playerLink();
+
             sendMessage("LINKED " + id + " " + game.getWidth() + " " + game.getHeight(), client);
             sendMessage("MESSAGE welcome! ", client);
             clientNum++;
@@ -155,7 +158,7 @@ public class GameServer extends Thread implements GameUpdateListener {
         } catch (IOException e) {
             throw new RuntimeException();
         } catch (Exception e) {
-            System.out.println(e.getCause().getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -166,16 +169,7 @@ public class GameServer extends Thread implements GameUpdateListener {
             ByteBuffer bufferInt = ByteBuffer.allocate(INT_SIZE);
             client.read(bufferInt);
             bufferInt.flip();
-            if (!bufferInt.hasRemaining()) {
-                return;
-            }
             int contentSize = bufferInt.getInt();
-
-            if (contentSize == -1) {
-                client.close();
-                key.cancel();
-                return;
-            }
 
             ByteBuffer buffer = ByteBuffer.allocate(contentSize);
             client.read(buffer);
@@ -248,7 +242,11 @@ public class GameServer extends Thread implements GameUpdateListener {
             ByteBuffer buffer = ByteBuffer.allocate(bytes.length);
             buffer.put(bytes);
             buffer.flip();
-            client.write(buffer);
+            while (true) {
+                if (client.write(buffer) != 0) {
+                    break;
+                }
+            }
         } catch (IOException e) {
 //            throw new RuntimeException();
         }

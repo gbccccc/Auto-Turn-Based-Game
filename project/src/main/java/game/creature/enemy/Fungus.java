@@ -47,8 +47,8 @@ public class Fungus extends Enemy {
     private List<Position> generateRange() {
         ArrayList<Position> range = new ArrayList<>();
         int x = getX(), y = getY();
-
-        for (int targetX = x - 2; targetX <= x + 2; targetX++) {
+        final int attackLength = 3;
+        for (int targetX = x - attackLength; targetX <= x + attackLength; targetX++) {
             if (targetX == x) {
                 continue;
             }
@@ -57,7 +57,7 @@ public class Fungus extends Enemy {
             } catch (Exception ignored) {
             }
         }
-        for (int targetY = y - 2; targetY <= y + 2; targetY++) {
+        for (int targetY = y - attackLength; targetY <= y + attackLength; targetY++) {
             if (targetY == y) {
                 continue;
             }
