@@ -3,11 +3,11 @@ package networking;
 import game.Game;
 import game.GameUpdateListener;
 import game.world.Direction;
+import game.world.World;
 import gui.DrawTask;
 import mylib.Inet4Address;
 
 import java.io.*;
-import java.lang.instrument.Instrumentation;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
@@ -28,9 +28,34 @@ public class GameServer extends Thread implements GameUpdateListener {
     public static int BUFFER_SIZE = 1024;
     public static int INT_SIZE = 4;
 
+    private GameServer(String savePath, int port) {
+        try (Reader saveReader = new BufferedReader(new InputStreamReader(
+                GameServer.class.getClassLoader().getResourceAsStream("defaultSaves/defaultSave.txt"))
+        )) {
+            this.savePath = savePath;
 
-    private GameServer(String saveFile, String savePath, int port) {
-        try (Reader saveReader = new FileReader(saveFile)) {
+            game = new Game(saveReader);
+            game.setUpdateListener(this);
+
+            drawTasks = Collections.synchronizedList(new ArrayList<>());
+            drawTasksReady = false;
+
+            selector = Selector.open();
+            clientNum = 0;
+
+            serverChannel = ServerSocketChannel.open();
+
+            serverChannel.configureBlocking(false);
+            serverChannel.bind(new InetSocketAddress(Inet4Address.getInet4Address(), port));
+            System.out.println("Server waiting at " + serverChannel.getLocalAddress());
+            serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private GameServer(Reader saveReader, String savePath, int port) {
+        try {
             this.savePath = savePath;
 
             game = new Game(saveReader);
@@ -57,7 +82,18 @@ public class GameServer extends Thread implements GameUpdateListener {
 
     public static GameServer getGameServer(String saveFile, String savePath, int port) {
         if (gameServer == null) {
-            gameServer = new GameServer(saveFile, savePath, port);
+            try (Reader saveReader = new FileReader(saveFile)) {
+                gameServer = new GameServer(saveReader, savePath, port);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return gameServer;
+    }
+
+    public static GameServer getGameServer(String savePath, int port) {
+        if (gameServer == null) {
+            gameServer = new GameServer(savePath, port);
         }
         return gameServer;
     }
@@ -200,10 +236,14 @@ public class GameServer extends Thread implements GameUpdateListener {
                 }
             }
             case "SAVE" -> {
-                try (Writer output = new FileWriter(savePath)) {
-                    output.write(game.generateSave());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                while (true) {
+                    try (Writer output = new FileWriter(savePath)) {
+                        output.write(game.generateSave());
+                        break;
+                    } catch (IOException e) {
+                        File file = new File("./saves");
+                        file.mkdir();
+                    }
                 }
             }
             case "PAUSE" -> {
@@ -276,9 +316,20 @@ public class GameServer extends Thread implements GameUpdateListener {
     }
 
     public static void main(String[] args) {
-        String saveFile = "saves/" + args[0] + ".txt", savePath = "saves/" + args[1] + ".txt";
-        int port = Integer.parseInt(args[2]);
-        GameServer server = GameServer.getGameServer(saveFile, savePath, port);
-        server.start();
+        String saveFile, savePath;
+        GameServer server = null;
+        if (args.length == 3) {
+            saveFile = "saves/" + args[0] + ".txt";
+            savePath = "saves/" + args[1] + ".txt";
+            int port = Integer.parseInt(args[2]);
+            server = GameServer.getGameServer(saveFile, savePath, port);
+        } else if (args.length == 2) {
+            savePath = "saves/" + args[0] + ".txt";
+            int port = Integer.parseInt(args[1]);
+            server = GameServer.getGameServer(savePath, port);
+        }
+        if (server != null) {
+            server.start();
+        }
     }
 }

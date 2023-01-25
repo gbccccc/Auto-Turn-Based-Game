@@ -67,7 +67,7 @@ public class Game implements ActionListener {
 
     public Game() {
         this(new InputStreamReader(
-                Game.class.getClassLoader().getResourceAsStream("initiateSaves/defaultSave.txt")
+                Game.class.getClassLoader().getResourceAsStream("defaultSaves/defaultSave.txt")
         ));
     }
 

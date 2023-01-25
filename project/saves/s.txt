@@ -1,8 +1,0 @@
-GAME 5 true
-WORLD world
-PLAYER Player 0 30 DOWN 9 2
-ENEMY Skeleton 5 1 14 1
-ENEMY Skeleton 10 0 7 7
-ENEMY Slime 5 UP 13 16
-ENEMY Skeleton 5 0 5 2
-ENEMY Skeleton 15 1 21 12
