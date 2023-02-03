@@ -16,8 +16,6 @@ java -jar GameServer.jar <saveName> <newSaveName> <port>
 
 The server will load `saves/<saveName>.txt` as the initial game state and will write the game state into `saves/<newSaveName>.txt` when saving. Your game server will run on port `<port>` .
 
-
-
 Or you can start the server loading a default save file without a given `saveName` .
 
 ```
