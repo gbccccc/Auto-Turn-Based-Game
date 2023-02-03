@@ -4,7 +4,7 @@ This project originates from the final assignment of NJU-java2022. It has develo
 
 ### Start the Game
 
-Download the release and you will see two jar file.
+Download the release and you will see two jar files.
 
 
 
