@@ -24,7 +24,7 @@ Or you can start the server loading a default save file without a given `saveNam
 java -jar GameServer.jar <newSaveName> <port>
 ```
 
-Then you can see the ip and the port of the game server in the terminal.
+Then you can see the IP and the port of the game server in the terminal.
 
 
 
