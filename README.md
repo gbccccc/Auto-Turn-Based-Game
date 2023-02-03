@@ -4,6 +4,10 @@ This project originates from the final assignment of NJU-java2022. It has develo
 
 ### Start the Game
 
+Download the release and you will see two jar file.
+
+
+
 First, start the game server. 
 
 ```
@@ -33,6 +37,10 @@ java -jar GameClient.jar <ip> <port>
 Game clients and the game server should be in a same LAN. `<ip>` and `<port>` represent the IP and the port respectively where the game server is running.
 
 At most 4 game clients are permitted to link to a single game server.
+
+
+
+If you are running the project with an ide, `GameServer.java` and `GameClient.java` are program entrances and arguments should be set as well.
 
 ### Control
 
