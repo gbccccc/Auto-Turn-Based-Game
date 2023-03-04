@@ -1,6 +1,6 @@
 # JavaGameBC
 
-This project originates from the final assignment of NJU-java2022. It has developed a simple multi-player game by Java 17. The project is constructed by Maven. GUI is based on Java Swing. Network communicating is based on Java NIO.
+This project originates from the final assignment of NJU-Java2022. It has developed a simple multi-player game by Java 17. The project is constructed by Maven. GUI is based on Java Swing. Network communicating is based on Java NIO.
 
 ### Start the Game
 
@@ -46,4 +46,4 @@ Keys WASD or direction keys for changing players' direction. Key I for save the 
 
 ### Doc
 
-If you are able to read Chinese, you can look up *Developing a Java Game from Scratch* for details of the project.
+If you can read Chinese, you can look up *Developing a Java Game from Scratch* for details of the project.
