@@ -40,7 +40,50 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <finalName>
+                        JavaGame
+                    </finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>GameServer</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>networking.GameServer</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>
+                                GameServer
+                            </finalName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>GameClient</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>networking.GameClient</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>
+                                GameClient
+                            </finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
 </project>
