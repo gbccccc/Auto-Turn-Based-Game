@@ -2,6 +2,8 @@
 
 This project originates from the final assignment of NJU-Java2022. It has developed a simple multi-player game by Java 17. The project is constructed by Maven. GUI is based on Java Swing. Network communicating is based on Java NIO.
 
+![](./readme.png)
+
 ### Start the Game
 
 Download the release and you will see two jar files.
