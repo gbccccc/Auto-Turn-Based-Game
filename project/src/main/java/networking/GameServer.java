@@ -132,7 +132,7 @@ public class GameServer extends Thread implements GameUpdateListener {
                 continue;
             }
 
-            if (key.isWritable() && drawTasksReady) {
+            if (key.isWritable()) {
                 handleWritableKey(key);
             }
 
@@ -140,8 +140,6 @@ public class GameServer extends Thread implements GameUpdateListener {
                 handleReadableKey(key);
             }
         }
-        drawTasks.clear();
-        drawTasksReady = false;
     }
 
     private void onGameOver() {
@@ -294,8 +292,8 @@ public class GameServer extends Thread implements GameUpdateListener {
 
     @Override
     public synchronized void gameUpdatePerform() {
+        drawTasks.clear();
         game.repaint();
-        drawTasksReady = true;
     }
 
     public void sendMessage(String content, SocketChannel client) {
