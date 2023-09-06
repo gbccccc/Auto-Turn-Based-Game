@@ -48,4 +48,4 @@ Keys WASD or direction keys for changing players' direction. Key I for save the 
 
 ### Doc
 
-If you can read Chinese, you can look up *Developing a Java Game from Scratch* for details of the project.
+If you read Chinese, you can look up *Developing a Java Game from Scratch* for details of the project.
